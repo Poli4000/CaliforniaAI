@@ -1,0 +1,40 @@
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.tree import plot_tree
+from sklearn.model_selection import train_test_split
+
+
+# Cargar dataset
+datos = pd.read_csv("C:\\Users\\Alumno\\PycharmProjects\\WelcomeScreen\\housing.csv")
+
+#plot tree ----------------
+
+# Eliminar filas con valores nulos
+datos = datos.dropna()
+
+X = datos.drop(["median_house_value", "ocean_proximity"], axis=1)
+y = datos["median_house_value"]
+
+# Creo arbolito
+modelo = DecisionTreeRegressor(max_depth=3, random_state=42)
+modelo.fit(X, y)
+
+# Dibujar arbol
+plt.figure(figsize=(20, 10))
+plot_tree(modelo, feature_names=X.columns, filled=True)
+plt.savefig("arbol_california.png")
+plt.show()
+
+# Comprobar valores nulos
+print("Valores nulos:")
+print(datos.isnull().sum())
+
+# Histograma de MedHouseVal con el codigo de la ia
+plt.hist(datos["median_house_value"], bins=30)
+plt.xlabel("Precio de la vivienda")
+plt.ylabel("Número de viviendas")
+plt.title("Distribución de MedHouseVal")
+plt.show()
